@@ -1,0 +1,6 @@
+[submodule "supercollider"]
+	path = supercollider
+	url = https://github.com/supercollider/supercollider/
+[submodule "CoreAudioUtilityClasses"]
+	path = CoreAudioUtilityClasses
+	url = https://github.com/g-roma/CoreAudioUtilityClasses
