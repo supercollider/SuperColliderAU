@@ -1,0 +1,14 @@
+language:cpp
+os:osx
+osx_image: xcode7.3
+env: QT=true
+before_install:
+ - $TRAVIS_BUILD_DIR/supercollider/.travis/before-install-osx.sh --qt=true
+before_script: 
+ - mkdir BUILD && cd BUILD
+ - $TRAVIS_BUILD_DIR/supercollider/.travis/before-script-osx.sh --qt=true
+script:
+ - $TRAVIS_BUILD_DIR/supercollider/.travis/script-osx.sh
+ - cmake --build $TRAVIS_BUILD_DIR/BUILD
+ - cd build && make
+ - auval -v aumf SCAU SCAU -r 4
