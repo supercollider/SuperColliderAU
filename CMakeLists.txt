@@ -1,22 +1,21 @@
 cmake_minimum_required(VERSION 2.8.11) # needed for CFBundle building
 
 if(NOT APPLE)
-	message(SEND_ERROR "SuperColliderAU folder invoked by cmake, but not APPLE platform")
+	message(SEND_ERROR "ERROR: only APPLE platform is supported")
 endif()
 
-if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
-    set(CMAKE_COMPILER_IS_CLANG 1)
-else()
-	message(SEND_ERROR "Only CLANG compiler supported")
-endif()
+#if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "AppleClang")
+#    set(CMAKE_COMPILER_IS_CLANG 1)
+#else()
+#	message(SEND_ERROR "Only CLANG compiler supported")
+#endif()
 
 message("Building SuperColliderAU")
 
 option(SSE "Compile with support for SSE instructions." ON)
 option(SSE2 "Compile with support for SSE2 instructions." ON)
 
-#build from SCAU dir
-set(SC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/../../../)
+set(SC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/supercollider)
 
 if (NOT CMAKE_BUILD_TYPE)
 	set(CMAKE_BUILD_TYPE "RelWithDebInfo")
