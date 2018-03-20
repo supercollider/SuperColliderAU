@@ -5,10 +5,13 @@ cache: ccache
 before_install:
  - $TRAVIS_BUILD_DIR/supercollider/.travis/before-install-osx.sh --qt=true
 before_script: 
- - mkdir BUILD && cd BUILD
- - $TRAVIS_BUILD_DIR/supercollider/.travis/before-script-osx.sh --qt=true
+ - mkdir $TRAVIS_BUILD_DIR/supercollider/BUILD
+ - mkdir $TRAVIS_BUILD_DIR/BUILD
+ - cd $TRAVIS_BUILD_DIR/supercollider/BUILD
+ - cmake -G Xcode -DCMAKE_PREFIX_PATH=`brew --prefix qt55`  ..
 script:
- - $TRAVIS_BUILD_DIR/supercollider/.travis/script-osx.sh
- - cmake --build $TRAVIS_BUILD_DIR/BUILD
- - cd build && make
+ - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo
+ - cd $TRAVIS_BUILD_DIR/BUILD
+ - cmake ..
+ - make
  - auval -v aumf SCAU SCAU -r 4
