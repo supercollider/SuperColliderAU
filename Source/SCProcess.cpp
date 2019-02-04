@@ -66,15 +66,14 @@ void SCProcess::startUp(WorldOptions options, CFStringRef pluginsPath,  CFString
     CFStringGetCString(synthdefsPath, stringBuffer, sizeof(stringBuffer), kCFStringEncodingUTF8);
     setenv("SC_SYNTHDEF_PATH", stringBuffer, 1);
     this->portNum = findNextFreeUdpPort(preferredPort);
-
-    World_Cleanup(world, true);
     world = World_New(&options);
     //world->mDumpOSC=2;
 
     if (world) {
-        if (this->portNum >= 0) World_OpenUDP(world,  bindTo.c_str(), this->portNum);
-        //small_scpacket packet = messages.initTreeMessage();
-        //World_SendPacket(world, 16, (char*)packet.buf, null_reply_func);
+        if (this->portNum >= 0) mPort = new UDPPort(world,  bindTo.c_str(), this->portNum);
+        //if (this->portNum >= 0) World_OpenUDP(world,  bindTo.c_str(), this->portNum);
+        small_scpacket packet = messages.initTreeMessage();
+        World_SendPacket(world, 16, (char*)packet.buf, null_reply_func);
       }
 }
 
@@ -121,4 +120,6 @@ void SCProcess::run(const AudioBufferList* in, AudioBufferList* out,  UInt32 inF
 
 void SCProcess::quit(){
     World_Cleanup(world, true);
+    mPort->stopAsioThread();
+    free(mPort);
 }

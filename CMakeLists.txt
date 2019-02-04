@@ -167,6 +167,7 @@ set(scau_sources
 	${CMAKE_CURRENT_SOURCE_DIR}/CoreAudioUtilityClasses/CoreAudio/PublicUtility/CAVectorUnit.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CoreAudioUtilityClasses/CoreAudio/AudioUnits/AUPublic/AUBase/ComponentBase.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/CoreAudioUtilityClasses/CoreAudio/AudioUnits/AUPublic/AUBase/AUPlugInDispatch.cpp
+	${CMAKE_CURRENT_SOURCE_DIR}/Source/UDPPort.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Source/ControlSpecs.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Source/OSCMessages.cpp
 	${CMAKE_CURRENT_SOURCE_DIR}/Source/Resources.cpp

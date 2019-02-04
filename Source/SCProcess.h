@@ -25,6 +25,7 @@
 
 #include "Resources.h"
 #include "OSCMessages.h"
+#include "UDPPort.h"
 
 #include <sys/socket.h>
 #include <stdio.h>
@@ -46,11 +47,11 @@ public:
     void sendTick(int64 oscTime, int bus);
     void quit();
     void run(const AudioBufferList* in, AudioBufferList* out, UInt32 inFramesToProcess,  AudioTimeStamp inTimeStamp, Float64 sampleRate,int64 oscTime);
-		
+
 private:
     World* world;
-		pthread_t scThread;
     int findNextFreeUdpPort(int startNum);
+		UDPPort * mPort;
 };
 
 #endif
