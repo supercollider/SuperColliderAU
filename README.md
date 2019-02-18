@@ -5,9 +5,13 @@ SuperColliderAU is an AudioUnit wrapper that allows using SuperCollider servers 
 
 Below are some quick instructions for building SuperColliderAU. The result is an AudioUnit plug-in that can be used for the first use case (interactive), and can also be modified for the second (standalone) using the AudioUnitBuilder quark.
 
-In order to build SuperColliderAU, you first need to build SuperCollider itself in the usual way. This is needed for generating SC\_Version.hpp and also for compiling plugins. It is assumed that the SuperCollider build folder is named `build`.
+In order to build SuperColliderAU, you first need to build SuperCollider, which is included in this repository as a submodule. For this to work you must first clone the SuperColliderAU with the recursive flag:
 
-After compiling SuperCollider, cd to this directory and run:
+git clone --recursive https://github.com/supercollider/SuperColliderAU
+
+After this, cd to the supercollider directory and build as explained in the Build Instructions section in READMEi\_MACOS.md. This is needed for generating SC\_Version.hpp and also for compiling plugins. It is important to note that the build process for SuperColliderAU assumes that the name of the supercollider build folder `build`.
+
+After compiling SuperCollider, cd back to the SuperColliderAU root directory and run:
 
     mkdir build
     cd build
