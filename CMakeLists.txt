@@ -76,11 +76,11 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 set(scau_bundle "SuperColliderAU")
 set(SNDFILE_INCLUDE_DIR ${SC_DIR}/external_libraries/libsndfile/)
-set(BOOST_INCLUDE_DIR ${SC_DIR}external_libraries/boost/)
+set(BOOST_INCLUDE_DIR ${SC_DIR}/external_libraries/boost/)
 set(TLSF_INCLUDE_DIR ${SC_DIR}/external_libraries/TLSF-2.4.6/src/)
 
 include_directories(${SC_DIR}/external_libraries
-	${SC_DIR}/${BOOST_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
 	${SNDFILE_INCLUDE_DIR}
 	${PTHREADS_INCLUDE_DIR}
 	${TLSF_INCLUDE_DIR}
@@ -251,7 +251,7 @@ add_definitions("-DLIBSNDFILE_1018")
 if (Boost_FOUND)
 	target_link_libraries(${scau_bundle} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} )
 else()
-	target_link_libraries(${scau_bundle} boost_system boost_filesystem)
+	target_link_libraries(${scau_bundle} boost_system_lib boost_filesystem_lib )
 endif()
 
 target_link_libraries(${scau_bundle} ${PTHREADS_LIBRARY})
