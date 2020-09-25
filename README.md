@@ -9,7 +9,7 @@ In order to build SuperColliderAU, you first need to build SuperCollider, which 
 
 git clone --recursive https://github.com/supercollider/SuperColliderAU
 
-After this, cd to the supercollider directory and build as explained in the Build Instructions section in READMEi\_MACOS.md. This is needed for generating SC\_Version.hpp and also for compiling plugins. It is important to note that the build process for SuperColliderAU assumes that the name of the supercollider build folder `build`.
+After this, cd to the supercollider directory and build as explained in the Build Instructions section in README_MACOS.md. This is needed for generating `SC_Version.hpp` and also for compiling plugins. It is important to note that the build process for SuperColliderAU assumes that the name of the supercollider build folder `build`.
 
 After compiling SuperCollider, cd back to the SuperColliderAU root directory and run:
 
