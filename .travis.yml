@@ -10,7 +10,7 @@ before_script:
  - cd $TRAVIS_BUILD_DIR/supercollider/BUILD
  - cmake -G Xcode -DCMAKE_PREFIX_PATH=`brew --prefix qt5`  ..
 script:
- - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo
+ - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo -- -quiet
  - cd $TRAVIS_BUILD_DIR/BUILD
  - cmake ..
  - make
