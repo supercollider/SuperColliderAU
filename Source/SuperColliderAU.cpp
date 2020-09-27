@@ -20,7 +20,7 @@
 
 
 
-AUDIOCOMPONENT_ENTRY(AUBaseFactory, SuperColliderAU)
+AUDIOCOMPONENT_ENTRY(AUMIDIEffectFactory, SuperColliderAU)
 
 SuperColliderAU::SuperColliderAU(AudioUnit component)
         : AUMIDIEffectBase(component)
