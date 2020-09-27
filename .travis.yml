@@ -15,4 +15,4 @@ script:
  - cmake ..
  - make
  - cp -r $TRAVIS_BUILD_DIR/BUILD/SuperColliderAU.component ~/Library/Audio/Plug-Ins/Components/SuperColliderAU.component
- - auval -v aumf SCAU SCAU -r 4
+ - auval -v aumf SCAU SCAU -r 2
