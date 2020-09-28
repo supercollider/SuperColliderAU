@@ -1,6 +1,6 @@
 language: cpp
 os: osx
-osx_image: xcode7.3
+osx_image: xcode10.1
 cache: ccache
 before_install:
  - $TRAVIS_BUILD_DIR/supercollider/.travis/before-install-osx.sh --qt=true
@@ -8,11 +8,11 @@ before_script:
  - mkdir $TRAVIS_BUILD_DIR/supercollider/BUILD
  - mkdir $TRAVIS_BUILD_DIR/BUILD
  - cd $TRAVIS_BUILD_DIR/supercollider/BUILD
- - cmake -G Xcode -DCMAKE_PREFIX_PATH=`brew --prefix qt55`  ..
+ - cmake -G Xcode -DCMAKE_PREFIX_PATH=`brew --prefix qt5`  ..
 script:
- - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo
+ - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo -- -quiet
  - cd $TRAVIS_BUILD_DIR/BUILD
  - cmake ..
  - make
  - cp -r $TRAVIS_BUILD_DIR/BUILD/SuperColliderAU.component ~/Library/Audio/Plug-Ins/Components/SuperColliderAU.component
- - auval -v aumf SCAU SCAU -r 4
+ - auval -v aumf SCAU SCAU -r 2

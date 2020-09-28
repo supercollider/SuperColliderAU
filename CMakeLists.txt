@@ -1,4 +1,5 @@
 cmake_minimum_required(VERSION 2.8.11) # needed for CFBundle building
+project(SuperColliderAU)
 
 if(NOT APPLE)
 	message(SEND_ERROR "ERROR: only APPLE platform is supported")
@@ -29,16 +30,13 @@ endif()
 
 file(GLOB PLUGINS ${SC_DIR}/build/server/plugins/${CMAKE_BUILD_TYPE}/*.scx)
 
+set(CMAKE_MODULE_PATH ${SC_DIR}/cmake_modules)
 include (${SC_DIR}/cmake_modules/FinalFile.cmake)
 include (${SC_DIR}/cmake_modules/FindPthreads.cmake)
 include (${SC_DIR}/cmake_modules/FindSndfile.cmake)
 
 find_package(Pthreads)
 find_package(Sndfile)
-
-if (NOT PTHREADS_FOUND)
-		message(SEND_ERROR "cannot find libpthreads")
-endif()
 
 if (NOT PTHREADS_FOUND)
 		message(SEND_ERROR "cannot find libpthreads")
@@ -75,12 +73,12 @@ set(CMAKE_CXX_LINK_FLAGS "${CMAKE_CXX_LINK_FLAGS} -stdlib=libc++")
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g")
 
 set(scau_bundle "SuperColliderAU")
-set(SNDFILE_INCLUDE_DIR ${SC_DIR}/external_libraries/libsndfile/)
-set(BOOST_INCLUDE_DIR ${SC_DIR}external_libraries/boost/)
-set(TLSF_INCLUDE_DIR ${SC_DIR}/external_libraries/TLSF-2.4.6/src/)
+set(SNDFILE_INCLUDE_DIR ${SC_DIR}/external_libraries/libsndfile)
+set(BOOST_INCLUDE_DIR ${SC_DIR}/external_libraries/boost)
+set(TLSF_INCLUDE_DIR ${SC_DIR}/external_libraries/TLSF-2.4.6/src)
 
 include_directories(${SC_DIR}/external_libraries
-	${SC_DIR}/${BOOST_INCLUDE_DIR}
+	${BOOST_INCLUDE_DIR}
 	${SNDFILE_INCLUDE_DIR}
 	${PTHREADS_INCLUDE_DIR}
 	${TLSF_INCLUDE_DIR}
@@ -115,8 +113,8 @@ add_definitions("-D__ASSERT_MACROS_DEFINE_VERSIONS_WITHOUT_UNDERSCORES=0")
 add_definitions(-w)# TODO: fix deprecation warnings
 
 if (NOT Boost_FOUND)
-	file(GLOB boost_system_sources ../../external_libraries/boost/libs/system/src/*cpp)
-	file(GLOB boost_filesystem_sources ../../external_libraries/boost/libs/filesystem/src/*cpp)
+	file(GLOB boost_system_sources ${SC_DIR}/external_libraries/boost/libs/system/src/*cpp)
+	file(GLOB boost_filesystem_sources ${SC_DIR}/external_libraries/boost/libs/filesystem/src/*cpp)
 endif()
 
 set(scau_sources
@@ -251,7 +249,7 @@ add_definitions("-DLIBSNDFILE_1018")
 if (Boost_FOUND)
 	target_link_libraries(${scau_bundle} ${Boost_SYSTEM_LIBRARY} ${Boost_FILESYSTEM_LIBRARY} )
 else()
-	target_link_libraries(${scau_bundle} boost_system boost_filesystem)
+	target_link_libraries(${scau_bundle} boost_system_lib boost_filesystem_lib)
 endif()
 
 target_link_libraries(${scau_bundle} ${PTHREADS_LIBRARY})

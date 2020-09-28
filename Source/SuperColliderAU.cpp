@@ -20,7 +20,7 @@
 
 
 
-AUDIOCOMPONENT_ENTRY(AUBaseFactory, SuperColliderAU)
+AUDIOCOMPONENT_ENTRY(AUMIDIEffectFactory, SuperColliderAU)
 
 SuperColliderAU::SuperColliderAU(AudioUnit component)
         : AUMIDIEffectBase(component)
@@ -198,7 +198,7 @@ ComponentResult SuperColliderAU::Initialize()
       scprintf("*******************************************************\n");
       scprintf("SuperColliderAU Initialized \n");
 	    scprintf("SuperColliderAU provided under the GNU GPL license. http://www.gnu.org/licenses/gpl-2.0.txt \n");
-	    scprintf("SuperColliderAU source code: http://supercollider.sf.net \n");
+	    scprintf("SuperColliderAU source code: https://github.com/supercollider/SuperColliderAU \n");
       scprintf("SuperColliderAU mPreferredHardwareBufferFrameSize: %d \n",options.mPreferredHardwareBufferFrameSize );
       scprintf("SuperColliderAU mBufLength: %d \n",options.mBufLength );
       scprintf("SuperColliderAU  port: %d \n", superCollider->portNum );
