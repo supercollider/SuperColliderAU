@@ -204,6 +204,8 @@ void UDPPort::handleReceivedUDP(const boost::system::error_code& error,
 
 	void UDPPort::stopAsioThread()
 	{
-		mIoService.stop();
-		mAsioThread.join();
+		if(mAsioThread.joinable()){
+			mIoService.stop();
+			mAsioThread.join();
+		}
 	}

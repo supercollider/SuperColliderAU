@@ -28,7 +28,7 @@ SCProcess::SCProcess() : world(nullptr)
 int SCProcess::findNextFreeUdpPort(int startNum){
 	int server_socket = -1;
 	struct sockaddr_in mBindSockAddr;
-	int numberOfTries=50;
+	int numberOfTries = 100;
 	int port = startNum;
 	if ((server_socket = socket(AF_INET, SOCK_DGRAM, 0)) < 0) {
 		scprintf("failed to create udp socket\n");
@@ -119,7 +119,9 @@ void SCProcess::run(const AudioBufferList* in, AudioBufferList* out,  UInt32 inF
 }
 
 void SCProcess::quit(){
-    World_Cleanup(world, true);
-    mPort->stopAsioThread();
-    free(mPort);
+    if(world){
+      World_Cleanup(world, true);
+      mPort->stopAsioThread();
+      free(mPort);
+    }
 }

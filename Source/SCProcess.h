@@ -51,7 +51,7 @@ public:
 private:
     World* world;
     int findNextFreeUdpPort(int startNum);
-		UDPPort * mPort;
+		UDPPort* mPort;
 };
 
 #endif

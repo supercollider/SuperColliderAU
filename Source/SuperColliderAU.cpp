@@ -139,7 +139,7 @@ ComponentResult SuperColliderAU::Initialize()
     //scprintf("SuperColliderAU: Initialize\n");
     WorldOptions options;
     options.mPreferredSampleRate = GetSampleRate();
-    options.mBufLength = kDefaultBlockSize;    
+    options.mBufLength = kDefaultBlockSize;
     options.mPreferredHardwareBufferFrameSize = GetMaxFramesPerSlice();
 	  options.mMaxWireBufs = kDefaultNumWireBufs;
     options.mRealTimeMemorySize = kDefaultRtMemorySize;
@@ -152,28 +152,28 @@ ComponentResult SuperColliderAU::Initialize()
 
 	  int udpPortNum = 9989;
 
-    if (CFDictionaryContainsKey(serverConfig, kPortNumberKey)){
+    if (serverConfig && CFDictionaryContainsKey(serverConfig, kPortNumberKey)){
         CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kPortNumberKey), kCFNumberIntType,(void *)&udpPortNum);
     }
 
-    if (CFDictionaryContainsKey(serverConfig, kBlockSizeKey)){
+    if (serverConfig && CFDictionaryContainsKey(serverConfig, kBlockSizeKey)){
         CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kBlockSizeKey), kCFNumberIntType,(void *)&options.mBufLength);
     }
 
-    if (CFDictionaryContainsKey(serverConfig, kBeatDivKey)){
+    if (serverConfig && CFDictionaryContainsKey(serverConfig, kBeatDivKey)){
         CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kBeatDivKey), kCFNumberIntType,(void *)&ticksPerBeat);
 		     this->beatsPerTick = 1.0 / ticksPerBeat;
     }
 
-    if (CFDictionaryContainsKey(serverConfig, kDoNoteOnKey)){
+    if (serverConfig && CFDictionaryContainsKey(serverConfig, kDoNoteOnKey)){
         //CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kDoNoteOnKey),kCFNumberIntType,(void *)&doNoteOn);
 		    this->doNoteOn = CFBooleanGetValue( (CFBooleanRef) CFDictionaryGetValue(serverConfig, kDoNoteOnKey));
     }
 
-	  if (CFDictionaryContainsKey(serverConfig, kNumWireBufsKey)){
+	  if (serverConfig && CFDictionaryContainsKey(serverConfig, kNumWireBufsKey)){
 		    CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kNumWireBufsKey), kCFNumberIntType,(void *)&options.mMaxWireBufs);
 	   }
-	  if (CFDictionaryContainsKey(serverConfig, kRtMemorySizeKey)){
+	  if (serverConfig && CFDictionaryContainsKey(serverConfig, kRtMemorySizeKey)){
 		    CFNumberGetValue( (CFNumberRef) CFDictionaryGetValue(serverConfig, kRtMemorySizeKey),kCFNumberIntType,(void *)&options.mRealTimeMemorySize);
 	   }
 
