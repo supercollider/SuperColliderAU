@@ -192,10 +192,10 @@ if(APPLE)
 endif()
 
 add_library(${scau_bundle} MODULE ${scau_sources})
-
 find_program(REZ Rez NO_DEFAULT_PATHS)
 execute_process(COMMAND
 	${REZ}
+	-isysroot ${CMAKE_OSX_SYSROOT}
 	${CMAKE_CURRENT_SOURCE_DIR}/Source/SuperColliderAU.r
 	-d SystemSevenOrLater=1 -useDF -script Roman -arch x86_64
 	-o ${CMAKE_CURRENT_SOURCE_DIR}/Resources/SuperColliderAU.rsrc
