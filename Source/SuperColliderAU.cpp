@@ -81,10 +81,10 @@ ComponentResult	SuperColliderAU::GetParameterInfo(	AudioUnitScope			inScope,
     {
         AUBase::FillInParameterName (outParameterInfo, CFSTR("Port"), true);
         outParameterInfo.unit = kAudioUnitParameterUnit_Generic;
-        outParameterInfo.minValue = 0;
-        outParameterInfo.maxValue = 9999;
+        outParameterInfo.minValue = superCollider->portNum;
+        outParameterInfo.maxValue = superCollider->portNum;
         outParameterInfo.defaultValue = superCollider->portNum;
-        outParameterInfo.flags = kAudioUnitParameterFlag_IsReadable;
+        outParameterInfo.flags = kAudioUnitParameterFlag_IsReadable|kAudioUnitParameterFlag_IsWritable;
     }
 
     else if (inScope == kAudioUnitScope_Global && this->haveSpecs)
