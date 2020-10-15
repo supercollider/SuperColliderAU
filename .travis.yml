@@ -3,7 +3,11 @@ os: osx
 osx_image: xcode10.1
 cache: ccache
 before_install:
- - $TRAVIS_BUILD_DIR/supercollider/.travis/before-install-osx.sh --qt=true
+ # copied from $TRAVIS_BUILD_DIR/supercollider/.travis/before-install-osx.sh:
+ - export HOMEBREW_NO_AUTO_UPDATE=1
+ - export HOMEBREW_NO_INSTALL_CLEANUP=1
+ - brew install libsndfile ccache qt5
+ - export PATH="/usr/local/opt/ccache/libexec:$PATH"
 before_script: 
  - mkdir $TRAVIS_BUILD_DIR/supercollider/BUILD
  - mkdir $TRAVIS_BUILD_DIR/BUILD
@@ -12,7 +16,7 @@ before_script:
 script:
  - cmake --build $TRAVIS_BUILD_DIR/supercollider/BUILD --target install --config RelWithDebInfo -- -quiet
  - cd $TRAVIS_BUILD_DIR/BUILD
- - cmake ..
+ - cmake -DCMAKE_OSX_SYSROOT=/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/ ..
  - make
  - cp -r $TRAVIS_BUILD_DIR/BUILD/SuperColliderAU.component ~/Library/Audio/Plug-Ins/Components/SuperColliderAU.component
  - auval -v aumf SCAU SCAU -r 2
