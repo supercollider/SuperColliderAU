@@ -144,6 +144,8 @@ ComponentResult SuperColliderAU::Initialize()
 	  options.mMaxWireBufs = kDefaultNumWireBufs;
     options.mRealTimeMemorySize = kDefaultRtMemorySize;
     options.mNumBuffers = 8192;
+    options.mNumInputBusChannels = GetNumberOfChannels();
+    options.mNumOutputBusChannels = GetNumberOfChannels();
 
     CFStringRef pluginsPath = resources->getResourcePath(resources->SC_PLUGIN_PATH);
     CFStringRef synthdefsPath = resources->getResourcePath(resources->SC_SYNTHDEF_PATH);
