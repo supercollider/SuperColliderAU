@@ -1,3 +1,4 @@
+
 cmake_minimum_required(VERSION 2.8.11) # needed for CFBundle building
 project(SuperColliderAU)
 
@@ -193,9 +194,14 @@ endif()
 
 add_library(${scau_bundle} MODULE ${scau_sources})
 find_program(REZ Rez NO_DEFAULT_PATHS)
+execute_process (
+    OUTPUT_STRIP_TRAILING_WHITESPACE
+    COMMAND xcrun --sdk macosx --show-sdk-path
+    OUTPUT_VARIABLE SDKROOT
+)
 execute_process(COMMAND
 	${REZ}
-	-isysroot ${CMAKE_OSX_SYSROOT}
+	-isysroot ${SDKROOT}
 	${CMAKE_CURRENT_SOURCE_DIR}/Source/SuperColliderAU.r
 	-d SystemSevenOrLater=1 -useDF -script Roman -arch x86_64
 	-o ${CMAKE_CURRENT_SOURCE_DIR}/Resources/SuperColliderAU.rsrc
