@@ -1,0 +1,89 @@
+name: CI
+on:
+  [push, pull_request]
+jobs:
+  build:
+    runs-on: macos-10.15
+    env:
+      SC_BUILD_PATH: ${{ github.workspace }}/supercollider/build
+      BUILD_PATH: ${{ github.workspace }}/build
+      DEVELOPER_DIR: '/Applications/Xcode_10.3.app/Contents/Developer'
+      MACOSX_DEPLOYMENT_TARGET: '10.10'
+      ARTIFACT_NAME: SuperColliderAU
+    steps:
+    - name: checkout repository
+      uses: actions/checkout@v2
+      with:
+        submodules: recursive
+    - name: prepare timestamp for cache
+      id: current-date
+      run: |
+        echo "::set-output name=stamp::$(date '+%Y-%m-%d')"
+        echo "::set-output name=week::$(date '+%V')"
+    - name: cache ccache
+      uses: actions/cache@v2
+      with:
+        path: ~/Library/Caches/ccache
+        key: ${{ runner.os }}-ccache-${{ steps.current-date.outputs.stamp }}
+        restore-keys: ${{ runner.os }}-ccache
+    - name: cache homebrew downloads
+      uses: actions/cache@v2
+      id: cache-homebrew
+      with:
+        path: ~/Library/Caches/Homebrew/downloads
+        key: ${{ runner.os }}-homebrew-${{ steps.current-date.outputs.week }}
+    - name: cleanup homebrew downloads # make sure we store only relevant downloads in cache
+      if: '!steps.cache-homebrew.outputs.cache-hit'
+      run: rm -rf $(brew --cache)
+    - name: install dependencies
+      run: |
+        brew install ccache qt5
+        # add ccamke to PATH - see https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-commands-for-github-actions
+        echo "/usr/local/opt/ccache/libexec" >> $GITHUB_PATH
+    - name: build libsndfile # to make it compatible with older OSes (lower deployment target)
+      run: |
+        brew uninstall --ignore-dependencies libsndfile
+        brew install automake
+        cd $GITHUB_WORKSPACE/..
+        curl -L https://github.com/libsndfile/libsndfile/releases/download/1.0.31/libsndfile-1.0.31.tar.bz2 --output libsndfile.tar.bz2
+        tar xfvz libsndfile.tar.bz2
+        cd libsndfile*/
+        mkdir build && cd build
+        cmake -DCMAKE_OSX_ARCHITECTURES=x86_64 -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DCMAKE_C_FLAGS="-Wall -Wextra" -DCMAKE_INSTALL_PREFIX=/usr/local ..
+        cmake --build . --target install
+    - name: configure and build SuperCollider
+      run: |
+        mkdir $SC_BUILD_PATH && cd $SC_BUILD_PATH
+        cmake -G Xcode -DCMAKE_PREFIX_PATH=`brew --prefix qt5` -DSUPERNOVA=OFF ..
+        cmake --build . --target install --config RelWithDebInfo -- -quiet
+    - name: configure SuperColliderAU
+      run: |
+        mkdir $BUILD_PATH && cd $BUILD_PATH
+        cmake ..
+    - name: build SuperColliderAU
+      working-directory: ${{ env.BUILD_PATH }}
+      run: make
+    - name: prepare testing
+      run: |
+        mkdir -p ~/Library/Audio/Plug-Ins/Components && cp -r $BUILD_PATH/SuperColliderAU.component ~/Library/Audio/Plug-Ins/Components/SuperColliderAU.component
+        sudo killall -9 AudioComponentRegistrar # this is needed according to https://apple.stackexchange.com/a/371039
+    - name: test SuperColliderAU
+      continue-on-error: true # continue even if the test fails
+      run: |
+        auval -v aumf SCAU SCAU -r 2
+    - name: make an archive
+      working-directory: ${{ env.BUILD_PATH }}
+      run: zip -r $ARTIFACT_NAME.zip SuperColliderAU.component
+    - name: upload artifacts
+      uses: actions/upload-artifact@v2
+      with:
+        name: ${{ env.ARTIFACT_NAME }}
+        path: ${{ env.BUILD_PATH }}/${{ env.ARTIFACT_NAME }}.zip
+    - name: deploy release
+      if: startsWith(github.ref, 'refs/tags/')
+      uses: svenstaro/upload-release-action@v2
+      with:
+        repo_token: ${{ secrets.GITHUB_TOKEN }}
+        prerelease: true
+        file: ${{ env.BUILD_PATH }}/${{ env.ARTIFACT_NAME }}.zip
+        tag: ${{ github.ref }}
